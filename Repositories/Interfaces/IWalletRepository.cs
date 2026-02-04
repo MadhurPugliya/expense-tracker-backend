@@ -1,3 +1,4 @@
+using ExpenseTracker.Dtos;
 using ExpenseTracker.Models;
 
 namespace ExpenseTracker.Repositories.interfaces
@@ -11,6 +12,12 @@ namespace ExpenseTracker.Repositories.interfaces
          Task<Wallet> CreateAsync(Wallet wallet);
 
          Task<Wallet> UpdateAsync(Wallet wallet);
+
+         Task<List<Wallet>> GetWalletTotalsAsync();
+
+         Task<bool> DeleteAsync(Wallet wallet);
+
+
         
     }
 }

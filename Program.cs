@@ -2,6 +2,7 @@ using ExpenseTracker.Data;
 using ExpenseTracker.Repositories;
 using ExpenseTracker.Repositories.interfaces;
 using ExpenseTracker.Services;
+using ExpenseTracker.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -66,6 +67,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<GlobalExceptionMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -78,4 +81,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-

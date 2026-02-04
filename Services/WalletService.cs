@@ -2,9 +2,11 @@ using ExpenseTracker.Dtos;
 using ExpenseTracker.Models;
 using ExpenseTracker.Repositories.interfaces;
 
-namespace ExpenseTracker.Services{
-    public class WalletService : IWalletService{
-        
+namespace ExpenseTracker.Services
+{
+    public class WalletService : IWalletService
+    {
+
         private readonly IWalletRepository _walletRepository;
 
         public WalletService(IWalletRepository walletRepository)
@@ -27,7 +29,7 @@ namespace ExpenseTracker.Services{
         public async Task<WalletResponseDto> GetWalletByIdAsync(int id)
         {
             var wallet = await _walletRepository.GetByIdAsync(id);
-            if(wallet == null) return null;
+            if (wallet == null) return null;
 
             return new WalletResponseDto
             {
@@ -48,7 +50,7 @@ namespace ExpenseTracker.Services{
             };
 
             var createdWallet = await _walletRepository.CreateAsync(wallet);
-              return new WalletResponseDto
+            return new WalletResponseDto
             {
                 Id = createdWallet.Id,
                 Name = createdWallet.Name,
@@ -60,7 +62,7 @@ namespace ExpenseTracker.Services{
         public async Task<WalletResponseDto> UpdateWalletAsync(int id, WalletUpdateDto walletDto)
         {
             var existingWallet = await _walletRepository.GetByIdAsync(id);
-            if(existingWallet == null) return null;
+            if (existingWallet == null) return null;
 
             existingWallet.Name = walletDto.Name;
             existingWallet.Balance = walletDto.Balance;
@@ -83,7 +85,7 @@ namespace ExpenseTracker.Services{
         public async Task<List<WalletResponseDto>> GetWalletByTypeAsync(WalletType type)
         {
             var wallets = await _walletRepository.GetByTypeAsync(type);
-               if(wallets == null) return null;
+            if (wallets == null) return null;
 
             return wallets.Select(w => new WalletResponseDto
             {
@@ -93,6 +95,31 @@ namespace ExpenseTracker.Services{
                 Type = w.Type
             }).ToList();
         }
-        
+
+        public async Task<WalletTotalDto> GetWalletTotalsAsync()
+        {
+            var wallets = await _walletRepository.GetWalletTotalsAsync();
+
+            var cashTotal = wallets.Where(w => w.Type == WalletType.Cash).Sum(w => w.Balance);
+            var bankTotal = wallets.Where(w => w.Type == WalletType.Bank).Sum(w => w.Balance);
+
+            return new WalletTotalDto
+            {
+                CashTotal = cashTotal,
+                BankTotal = bankTotal,
+                GrandTotal = cashTotal + bankTotal
+            };
+        }
+
+        public async Task<bool> DeleteWalletAsync(int id)
+        {
+            var wallet = await _walletRepository.GetByIdAsync(id);
+            if (wallet == null) return false;
+
+            return await _walletRepository.DeleteAsync(wallet);
+
+
+        }
+
     }
 }

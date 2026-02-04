@@ -24,4 +24,12 @@ namespace ExpenseTracker.Dtos
         public WalletType Type { get; set; }
         public string TypeName => Type.ToString(); // "Cash" or "Bank"
     }
+
+
+    public class WalletTotalDto
+    {
+        public double CashTotal { get; set; }
+        public double BankTotal { get; set; }
+        public double GrandTotal { get; set; }
+    }
 }

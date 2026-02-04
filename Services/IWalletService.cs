@@ -14,5 +14,9 @@ namespace ExpenseTracker.Services
         Task<List<WalletResponseDto>> GetWalletByTypeAsync(WalletType type);
 
         Task<WalletResponseDto> UpdateWalletAsync(int id, WalletUpdateDto walletDto);
+
+        Task<WalletTotalDto> GetWalletTotalsAsync();
+
+        Task<bool> DeleteWalletAsync(int id);
     }
 }

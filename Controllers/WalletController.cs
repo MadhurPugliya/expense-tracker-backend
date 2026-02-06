@@ -3,6 +3,7 @@ using ExpenseTracker.Services;
 using Microsoft.AspNetCore.Authorization;
 using ExpenseTracker.Dtos;
 using ExpenseTracker.Models;
+using System.Security.Claims;
 
 namespace ExpenseTracker.Controllers
 {
@@ -11,9 +12,9 @@ namespace ExpenseTracker.Controllers
     public class WalletController : ControllerBase
     {
         private readonly IWalletService _walletService;
-        private readonly ILogger<WalletController> _logger;
+        private readonly IFileLoggerService _logger;
 
-        public WalletController(IWalletService walletService, ILogger<WalletController> logger)
+        public WalletController(IWalletService walletService, IFileLoggerService logger)
         {
             _walletService = walletService;
             _logger = logger;
@@ -21,170 +22,167 @@ namespace ExpenseTracker.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllWallets()
+        public async Task<ActionResult<IEnumerable<WalletResponseDto>>> GetAllWallets()
         {
-            _logger.LogInformation("Getting all wallets");
             try
             {
-                var wallets = await _walletService.GetAllWalletsAsync();
-                _logger.LogInformation("Successfully retrieved {Count} wallets", wallets.Count);
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                await _logger.LogInformationAsync("Getting all wallets", new { UserId = userId });
+                
+                var wallets = await _walletService.GetAllWalletsAsync(userId);
+                
+                await _logger.LogInformationAsync("Successfully retrieved wallets", new { Count = wallets.Count, UserId = userId });
                 return Ok(wallets);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving wallets");
-                return StatusCode(500, new { message = "Error retrieving wallets", details = ex.Message });
+                await _logger.LogErrorAsync("Error retrieving wallets", ex);
+                return StatusCode(500, new { message = "Error retrieving wallets" });
             }
         }
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<IActionResult> GetWalletById(int id)
+        public async Task<ActionResult<WalletResponseDto>> GetWalletById(int id)
         {
-            _logger.LogInformation("Getting wallet with ID: {WalletId}", id);
             try
             {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                
                 if (id <= 0)
                 {
-                    _logger.LogWarning("Invalid wallet ID provided: {WalletId}", id);
+                    await _logger.LogWarningAsync("Invalid wallet ID provided", new { WalletId = id, UserId = userId });
                     return BadRequest(new { message = "Invalid wallet ID" });
                 }
 
-                var wallet = await _walletService.GetWalletByIdAsync(id);
+                var wallet = await _walletService.GetWalletByIdAsync(id, userId);
                 if (wallet == null)
                 {
-                    _logger.LogWarning("Wallet not found with ID: {WalletId}", id);
-                    return NotFound(new { message = "Wallet not found" });
+                    await _logger.LogWarningAsync("Wallet not found", new { WalletId = id, UserId = userId });
+                    return NotFound();
                 }
 
-                _logger.LogInformation("Successfully retrieved wallet: {WalletName}", wallet.Name);
+                await _logger.LogInformationAsync("Successfully retrieved wallet", new { WalletId = id, UserId = userId });
                 return Ok(wallet);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving wallet with ID: {WalletId}", id);
-                return StatusCode(500, new { message = "Error retrieving wallet", details = ex.Message });
+                await _logger.LogErrorAsync("Error retrieving wallet", ex, new { WalletId = id });
+                return StatusCode(500, new { message = "Error retrieving wallet" });
             }
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateWallet([FromBody] WalletCreateDto walletCreateDto)
+        public async Task<ActionResult<WalletResponseDto>> CreateWallet([FromBody] WalletCreateDto walletCreateDto)
         {
-            _logger.LogInformation("Creating new wallet: {WalletName}", walletCreateDto?.Name);
             try
             {
-                if (walletCreateDto == null)
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                
+                if (walletCreateDto == null || string.IsNullOrEmpty(walletCreateDto.Name))
                 {
-                    _logger.LogWarning("Wallet creation attempted with null data");
-                    return BadRequest(new { message = "Wallet data is required" });
-                }
-
-                if (string.IsNullOrEmpty(walletCreateDto.Name))
-                {
-                    _logger.LogWarning("Wallet creation attempted without name");
+                    await _logger.LogWarningAsync("Invalid wallet data", new { UserId = userId });
                     return BadRequest(new { message = "Wallet name is required" });
                 }
 
                 if (walletCreateDto.Balance < 0)
                 {
-                    _logger.LogWarning("Wallet creation attempted with negative balance: {Balance}", walletCreateDto.Balance);
+                    await _logger.LogWarningAsync("Negative balance attempted", new { Balance = walletCreateDto.Balance, UserId = userId });
                     return BadRequest(new { message = "Balance cannot be negative" });
                 }
 
-                var wallet = await _walletService.CreateWalletAsync(walletCreateDto);
-                _logger.LogInformation("Successfully created wallet: {WalletName} with ID: {WalletId}", wallet.Name, wallet.Id);
-                return Ok(new { message = "Wallet created successfully", wallet });
+                var wallet = await _walletService.CreateWalletAsync(walletCreateDto, userId);
+                
+                await _logger.LogInformationAsync("Wallet created successfully", new { WalletId = wallet.Id, UserId = userId });
+                return CreatedAtAction(nameof(GetWalletById), new { id = wallet.Id }, wallet);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating wallet: {WalletName}", walletCreateDto?.Name);
-                return StatusCode(500, new { message = "Error creating wallet", details = ex.Message });
+                await _logger.LogErrorAsync("Error creating wallet", ex, new { WalletName = walletCreateDto?.Name });
+                return StatusCode(500, new { message = "Error creating wallet" });
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("UpdateWallet/{id}")]
         [Authorize]
         public async Task<IActionResult> UpdateWallet(int id, [FromBody] WalletUpdateDto walletDto)
         {
-            _logger.LogInformation("Updating wallet with ID: {WalletId}", id);
             try
             {
-                if (id <= 0)
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                
+                if (id <= 0 || walletDto == null || string.IsNullOrEmpty(walletDto.Name))
                 {
-                    _logger.LogWarning("Invalid wallet ID for update: {WalletId}", id);
-                    return BadRequest(new { message = "Invalid wallet ID" });
-                }
-
-                if (walletDto == null)
-                {
-                    _logger.LogWarning("Wallet update attempted with null data for ID: {WalletId}", id);
-                    return BadRequest(new { message = "Wallet data is required" });
-                }
-
-                if (string.IsNullOrEmpty(walletDto.Name))
-                {
-                    _logger.LogWarning("Wallet update attempted without name for ID: {WalletId}", id);
-                    return BadRequest(new { message = "Wallet name is required" });
+                    await _logger.LogWarningAsync("Invalid update data", new { WalletId = id, UserId = userId });
+                    return BadRequest(new { message = "Valid wallet data is required" });
                 }
 
                 if (walletDto.Balance < 0)
                 {
-                    _logger.LogWarning("Wallet update attempted with negative balance: {Balance} for ID: {WalletId}", walletDto.Balance, id);
+                    await _logger.LogWarningAsync("Negative balance in update", new { Balance = walletDto.Balance, WalletId = id, UserId = userId });
                     return BadRequest(new { message = "Balance cannot be negative" });
                 }
 
-                var wallet = await _walletService.UpdateWalletAsync(id, walletDto);
+                var wallet = await _walletService.UpdateWalletAsync(id, walletDto, userId);
                 if (wallet == null)
                 {
-                    _logger.LogWarning("Wallet not found for update with ID: {WalletId}", id);
-                    return NotFound(new { message = "Wallet not found" });
+                    await _logger.LogWarningAsync("Wallet not found for update", new { WalletId = id, UserId = userId });
+                    return NotFound();
                 }
 
-                _logger.LogInformation("Successfully updated wallet: {WalletName} with ID: {WalletId}", wallet.Name, wallet.Id);
-                return Ok(new { message = "Wallet updated successfully", wallet });
+                await _logger.LogInformationAsync("Wallet updated successfully", new { WalletId = id, UserId = userId });
+                return NoContent();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating wallet with ID: {WalletId}", id);
-                return StatusCode(500, new { message = "Error updating wallet", details = ex.Message });
+                await _logger.LogErrorAsync("Error updating wallet", ex, new { WalletId = id });
+                return StatusCode(500, new { message = "Error updating wallet" });
             }
         }
 
         [HttpGet("type/{type}")]
         [Authorize]
-        public async Task<IActionResult> GetWalletByType(WalletType type)
+        public async Task<ActionResult<IEnumerable<WalletResponseDto>>> GetWalletByType(WalletType type)
         {
-            _logger.LogInformation("Getting wallets by type: {WalletType}", type);
             try
             {
-                var wallets = await _walletService.GetWalletByTypeAsync(type);
-                _logger.LogInformation("Successfully retrieved {Count} wallets of type: {WalletType}", wallets?.Count ?? 0, type);
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                
+                var wallets = await _walletService.GetWalletByTypeAsync(type, userId);
+                
+                await _logger.LogInformationAsync("Retrieved wallets by type", new { Type = type, Count = wallets?.Count ?? 0, UserId = userId });
                 return Ok(wallets);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving wallets by type: {WalletType}", type);
-                return StatusCode(500, new { message = "Error retrieving wallets by type", details = ex.Message });
+                await _logger.LogErrorAsync("Error retrieving wallets by type", ex, new { Type = type });
+                return StatusCode(500, new { message = "Error retrieving wallets by type" });
             }
         }
 
         [HttpGet("totals")]
         [Authorize]
-        public async Task<IActionResult> GetWalletTotals()
+        public async Task<ActionResult<WalletTotalDto>> GetWalletTotals()
         {
-            _logger.LogInformation("Calculating wallet totals");
             try
             {
-                var totalBalance = await _walletService.GetWalletTotalsAsync();
-                _logger.LogInformation("Successfully calculated totals - Cash: {CashTotal}, Bank: {BankTotal}, Grand: {GrandTotal}", 
-                    totalBalance.CashTotal, totalBalance.BankTotal, totalBalance.GrandTotal);
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                
+                var totalBalance = await _walletService.GetWalletTotalsAsync(userId);
+                
+                await _logger.LogInformationAsync("Calculated wallet totals", new { 
+                    CashTotal = totalBalance.CashTotal, 
+                    BankTotal = totalBalance.BankTotal, 
+                    GrandTotal = totalBalance.GrandTotal,
+                    UserId = userId 
+                });
                 return Ok(totalBalance);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error calculating wallet totals");
-                return StatusCode(500, new { message = "Error calculating wallet totals", details = ex.Message });
+                await _logger.LogErrorAsync("Error calculating wallet totals", ex);
+                return StatusCode(500, new { message = "Error calculating wallet totals" });
             }
         }
 
@@ -192,29 +190,30 @@ namespace ExpenseTracker.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteWallet(int id)
         {
-            _logger.LogInformation("Deleting wallet with ID: {WalletId}", id);
             try
             {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                
                 if (id <= 0)
                 {
-                    _logger.LogWarning("Invalid wallet ID for deletion: {WalletId}", id);
+                    await _logger.LogWarningAsync("Invalid wallet ID for deletion", new { WalletId = id, UserId = userId });
                     return BadRequest(new { message = "Invalid wallet ID" });
                 }
 
-                var result = await _walletService.DeleteWalletAsync(id);
+                var result = await _walletService.DeleteWalletAsync(id, userId);
                 if (!result)
                 {
-                    _logger.LogWarning("Wallet not found for deletion with ID: {WalletId}", id);
-                    return NotFound(new { message = "Wallet not found" });
+                    await _logger.LogWarningAsync("Wallet not found for deletion", new { WalletId = id, UserId = userId });
+                    return NotFound();
                 }
 
-                _logger.LogInformation("Successfully deleted wallet with ID: {WalletId}", id);
-                return Ok(new { message = "Wallet deleted successfully" });
+                await _logger.LogInformationAsync("Wallet deleted successfully", new { WalletId = id, UserId = userId });
+                return NoContent();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error deleting wallet with ID: {WalletId}", id);
-                return StatusCode(500, new { message = "Error deleting wallet", details = ex.Message });
+                await _logger.LogErrorAsync("Error deleting wallet", ex, new { WalletId = id });
+                return StatusCode(500, new { message = "Error deleting wallet" });
             }
         }
     }

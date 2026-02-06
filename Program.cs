@@ -46,8 +46,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 builder.Services.AddScoped<IWalletRepository,WalletRepository>();
 builder.Services.AddScoped<IWalletService,WalletService>();
+
+// Add File Logger Service
+builder.Services.AddSingleton<IFileLoggerService, FileLoggerService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

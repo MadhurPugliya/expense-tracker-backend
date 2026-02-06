@@ -1,0 +1,68 @@
+{
+  "Timestamp": "2026-02-04 17:49:42",
+  "Level": "INFO",
+  "Message": "User login attempt",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-04 17:49:45",
+  "Level": "INFO",
+  "Message": "User login successful",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-04 17:50:18",
+  "Level": "INFO",
+  "Message": "User login attempt",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-04 17:50:18",
+  "Level": "INFO",
+  "Message": "User login successful",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-04 17:53:55",
+  "Level": "INFO",
+  "Message": "Creating category",
+  "Data": {
+    "Name": "Rent"
+  }
+}
+{
+  "Timestamp": "2026-02-04 17:53:57",
+  "Level": "ERROR",
+  "Message": "Error creating category",
+  "Data": {
+    "ExceptionMessage": "Invalid object name \u0027Categories\u0027.",
+    "StackTrace": "   at Microsoft.Data.SqlClient.SqlCommand.\u003C\u003Ec.\u003CExecuteDbDataReaderAsync\u003Eb__211_0(Task\u00601 result)\r\n   at System.Threading.Tasks.ContinuationResultTaskFromResultTask\u00602.InnerInvoke()\r\n   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)\r\n--- End of stack trace from previous location ---\r\n   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)\r\n   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task\u0026 currentTaskSlot, Thread threadPoolThread)\r\n--- End of stack trace from previous location ---\r\n   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)\r\n   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)\r\n   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable\u00601.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)\r\n   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func\u00604 operation, Func\u00604 verifySucceeded, CancellationToken cancellationToken)\r\n   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable\u00601.AsyncEnumerator.MoveNextAsync()\r\n   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleAsync[TSource](IAsyncEnumerable\u00601 asyncEnumerable, CancellationToken cancellationToken)\r\n   at Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleAsync[TSource](IAsyncEnumerable\u00601 asyncEnumerable, CancellationToken cancellationToken)\r\n   at ExpenseTracker.Repositories.CategoryRepository.CategoryExistsAsync(String name) in C:\\Users\\mriteshp\\OneDrive - Capgemini\\Desktop\\Expense Tracker\\ExpenseTracker\\Repositories\\CategoryRepository.cs:line 31\r\n   at ExpenseTracker.Services.CategoryService.CreateCategoryAsync(CategoryCreateDto categoryCreateDto) in C:\\Users\\mriteshp\\OneDrive - Capgemini\\Desktop\\Expense Tracker\\ExpenseTracker\\Services\\CategoryService.cs:line 22\r\n   at ExpenseTracker.Controllers.CategoryController.CreateCategory(CategoryCreateDto categoryCreateDto) in C:\\Users\\mriteshp\\OneDrive - Capgemini\\Desktop\\Expense Tracker\\ExpenseTracker\\Controllers\\CategoryController.cs:line 34",
+    "AdditionalData": {
+      "Name": "Rent"
+    }
+  }
+}
+{
+  "Timestamp": "2026-02-04 17:58:07",
+  "Level": "INFO",
+  "Message": "Creating category",
+  "Data": {
+    "Name": "Rent"
+  }
+}
+{
+  "Timestamp": "2026-02-04 17:58:09",
+  "Level": "INFO",
+  "Message": "Category created successfully",
+  "Data": {
+    "Id": 1
+  }
+}

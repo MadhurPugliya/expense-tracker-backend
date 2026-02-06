@@ -1,0 +1,363 @@
+{
+  "Timestamp": "2026-02-05 14:49:20",
+  "Level": "INFO",
+  "Message": "User registration attempt",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-05 14:49:23",
+  "Level": "INFO",
+  "Message": "User registered successfully",
+  "Data": {
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 14:49:55",
+  "Level": "INFO",
+  "Message": "User login attempt",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-05 14:49:56",
+  "Level": "WARNING",
+  "Message": "User login failed",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com",
+    "Error": "Invalid credentials"
+  }
+}
+{
+  "Timestamp": "2026-02-05 14:50:07",
+  "Level": "INFO",
+  "Message": "User login attempt",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-05 14:50:07",
+  "Level": "INFO",
+  "Message": "User login successful",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-05 14:51:17",
+  "Level": "INFO",
+  "Message": "Wallet created successfully",
+  "Data": {
+    "WalletId": 1,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 14:51:25",
+  "Level": "INFO",
+  "Message": "Successfully retrieved wallet",
+  "Data": {
+    "WalletId": 1,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:32:20",
+  "Level": "INFO",
+  "Message": "User login attempt",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:32:22",
+  "Level": "INFO",
+  "Message": "User login successful",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:32:28",
+  "Level": "INFO",
+  "Message": "Getting all wallets",
+  "Data": {
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:32:28",
+  "Level": "INFO",
+  "Message": "Successfully retrieved wallets",
+  "Data": {
+    "Count": 1,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:33:58",
+  "Level": "INFO",
+  "Message": "Wallet created successfully",
+  "Data": {
+    "WalletId": 2,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:34:12",
+  "Level": "INFO",
+  "Message": "Retrieved wallets by type",
+  "Data": {
+    "Type": 2,
+    "Count": 1,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:37:06",
+  "Level": "INFO",
+  "Message": "Wallet updated successfully",
+  "Data": {
+    "WalletId": 2,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:38:11",
+  "Level": "INFO",
+  "Message": "Wallet updated successfully",
+  "Data": {
+    "WalletId": 2,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:38:19",
+  "Level": "INFO",
+  "Message": "Wallet updated successfully",
+  "Data": {
+    "WalletId": 1,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:38:23",
+  "Level": "INFO",
+  "Message": "Getting all wallets",
+  "Data": {
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:38:23",
+  "Level": "INFO",
+  "Message": "Successfully retrieved wallets",
+  "Data": {
+    "Count": 2,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:38:54",
+  "Level": "INFO",
+  "Message": "Wallet updated successfully",
+  "Data": {
+    "WalletId": 1,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:38:59",
+  "Level": "INFO",
+  "Message": "Getting all wallets",
+  "Data": {
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:38:59",
+  "Level": "INFO",
+  "Message": "Successfully retrieved wallets",
+  "Data": {
+    "Count": 2,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:39:41",
+  "Level": "INFO",
+  "Message": "Calculated wallet totals",
+  "Data": {
+    "CashTotal": 1000,
+    "BankTotal": 2000,
+    "GrandTotal": 3000,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:41:49",
+  "Level": "INFO",
+  "Message": "User registration attempt",
+  "Data": {
+    "Email": "anup@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:41:49",
+  "Level": "INFO",
+  "Message": "User registered successfully",
+  "Data": {
+    "UserId": 2
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:42:04",
+  "Level": "INFO",
+  "Message": "User login attempt",
+  "Data": {
+    "Email": "anup@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:42:04",
+  "Level": "INFO",
+  "Message": "User login successful",
+  "Data": {
+    "Email": "anup@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:42:11",
+  "Level": "INFO",
+  "Message": "Getting all wallets",
+  "Data": {
+    "UserId": 2
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:42:11",
+  "Level": "INFO",
+  "Message": "Successfully retrieved wallets",
+  "Data": {
+    "Count": 0,
+    "UserId": 2
+  }
+}
+{
+  "Timestamp": "2026-02-05 16:42:19",
+  "Level": "INFO",
+  "Message": "Calculated wallet totals",
+  "Data": {
+    "CashTotal": 0,
+    "BankTotal": 0,
+    "GrandTotal": 0,
+    "UserId": 2
+  }
+}
+{
+  "Timestamp": "2026-02-05 17:51:04",
+  "Level": "INFO",
+  "Message": "User login attempt",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-05 17:51:06",
+  "Level": "INFO",
+  "Message": "User login successful",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-05 17:51:22",
+  "Level": "INFO",
+  "Message": "Fetching all categories",
+  "Data": {
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 17:51:22",
+  "Level": "INFO",
+  "Message": "Categories fetched successfully",
+  "Data": {
+    "Count": 0,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 17:51:41",
+  "Level": "INFO",
+  "Message": "Creating category",
+  "Data": {
+    "Name": "Rent",
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 17:51:42",
+  "Level": "INFO",
+  "Message": "Category created successfully",
+  "Data": {
+    "Id": 1,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 17:51:45",
+  "Level": "INFO",
+  "Message": "Fetching all categories",
+  "Data": {
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 17:51:45",
+  "Level": "INFO",
+  "Message": "Categories fetched successfully",
+  "Data": {
+    "Count": 1,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 17:52:20",
+  "Level": "INFO",
+  "Message": "Creating category",
+  "Data": {
+    "Name": "Transportation",
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 17:52:20",
+  "Level": "INFO",
+  "Message": "Category created successfully",
+  "Data": {
+    "Id": 2,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 17:52:22",
+  "Level": "INFO",
+  "Message": "Fetching all categories",
+  "Data": {
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-05 17:52:22",
+  "Level": "INFO",
+  "Message": "Categories fetched successfully",
+  "Data": {
+    "Count": 2,
+    "UserId": 1
+  }
+}

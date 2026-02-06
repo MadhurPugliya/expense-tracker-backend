@@ -15,14 +15,14 @@ namespace ExpenseTracker.Repositories
             _context = context;
         }
 
-        public async Task<List<Wallet>> GetAllAsync()
+        public async Task<List<Wallet>> GetAllAsync(int userId)
         {
-            return await _context.Wallets.ToListAsync();
+            return await _context.Wallets.Where(w => w.UserId == userId).ToListAsync();
         }
 
-        public async Task<Wallet> GetByIdAsync(int id)
+        public async Task<Wallet> GetByIdAsync(int id, int userId)
         {
-            return await _context.Wallets.FirstOrDefaultAsync(w => w.Id == id);
+            return await _context.Wallets.FirstOrDefaultAsync(w => w.Id == id && w.UserId == userId);
         }
 
         public async Task<Wallet> CreateAsync(Wallet wallet)
@@ -32,9 +32,9 @@ namespace ExpenseTracker.Repositories
             return wallet;
         }
 
-        public async Task<List<Wallet>> GetByTypeAsync(WalletType type)
+        public async Task<List<Wallet>> GetByTypeAsync(WalletType type, int userId)
         {
-            return await _context.Wallets.Where(w => w.Type == type).ToListAsync();
+            return await _context.Wallets.Where(w => w.Type == type && w.UserId == userId).ToListAsync();
         }
 
         public async Task<Wallet> UpdateAsync(Wallet wallet)
@@ -44,22 +44,16 @@ namespace ExpenseTracker.Repositories
             return wallet;
         }
 
-        public async Task<List<Wallet>> GetWalletTotalsAsync()
+        public async Task<List<Wallet>> GetWalletTotalsAsync(int userId)
         {
-            return await _context.Wallets.ToListAsync();
-
+            return await _context.Wallets.Where(w => w.UserId == userId).ToListAsync();
         }
 
         public async Task<bool> DeleteAsync(Wallet wallet)
         {
-
             _context.Wallets.Remove(wallet);
             await _context.SaveChangesAsync();
             return true;
         }
-
-
-
     }
-
 }

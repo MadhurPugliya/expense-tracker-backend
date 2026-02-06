@@ -21,6 +21,35 @@ namespace ExpenseTracker.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ExpenseTracker.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("ExpenseTracker.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -64,9 +93,43 @@ namespace ExpenseTracker.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Wallets");
+                });
+
+            modelBuilder.Entity("ExpenseTracker.Models.Category", b =>
+                {
+                    b.HasOne("ExpenseTracker.Models.User", "User")
+                        .WithMany("Categories")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ExpenseTracker.Models.Wallet", b =>
+                {
+                    b.HasOne("ExpenseTracker.Models.User", "User")
+                        .WithMany("Wallets")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ExpenseTracker.Models.User", b =>
+                {
+                    b.Navigation("Categories");
+
+                    b.Navigation("Wallets");
                 });
 #pragma warning restore 612, 618
         }

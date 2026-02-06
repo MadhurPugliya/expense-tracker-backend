@@ -6,7 +6,6 @@ namespace ExpenseTracker.Services
 {
     public class WalletService : IWalletService
     {
-
         private readonly IWalletRepository _walletRepository;
 
         public WalletService(IWalletRepository walletRepository)
@@ -14,9 +13,9 @@ namespace ExpenseTracker.Services
             _walletRepository = walletRepository;
         }
 
-        public async Task<List<WalletResponseDto>> GetAllWalletsAsync()
+        public async Task<List<WalletResponseDto>> GetAllWalletsAsync(int userId)
         {
-            var wallets = await _walletRepository.GetAllAsync();
+            var wallets = await _walletRepository.GetAllAsync(userId);
             return wallets.Select(w => new WalletResponseDto
             {
                 Id = w.Id,
@@ -26,9 +25,9 @@ namespace ExpenseTracker.Services
             }).ToList();
         }
 
-        public async Task<WalletResponseDto> GetWalletByIdAsync(int id)
+        public async Task<WalletResponseDto> GetWalletByIdAsync(int id, int userId)
         {
-            var wallet = await _walletRepository.GetByIdAsync(id);
+            var wallet = await _walletRepository.GetByIdAsync(id, userId);
             if (wallet == null) return null;
 
             return new WalletResponseDto
@@ -40,13 +39,14 @@ namespace ExpenseTracker.Services
             };
         }
 
-        public async Task<WalletResponseDto> CreateWalletAsync(WalletCreateDto walletDto)
+        public async Task<WalletResponseDto> CreateWalletAsync(WalletCreateDto walletDto, int userId)
         {
             var wallet = new Wallet
             {
                 Name = walletDto.Name,
                 Balance = walletDto.Balance,
-                Type = walletDto.Type
+                Type = walletDto.Type,
+                UserId = userId
             };
 
             var createdWallet = await _walletRepository.CreateAsync(wallet);
@@ -59,9 +59,9 @@ namespace ExpenseTracker.Services
             };
         }
 
-        public async Task<WalletResponseDto> UpdateWalletAsync(int id, WalletUpdateDto walletDto)
+        public async Task<WalletResponseDto> UpdateWalletAsync(int id, WalletUpdateDto walletDto, int userId)
         {
-            var existingWallet = await _walletRepository.GetByIdAsync(id);
+            var existingWallet = await _walletRepository.GetByIdAsync(id, userId);
             if (existingWallet == null) return null;
 
             existingWallet.Name = walletDto.Name;
@@ -77,14 +77,11 @@ namespace ExpenseTracker.Services
                 Balance = updatedWallet.Balance,
                 Type = updatedWallet.Type
             };
-
-
-
         }
 
-        public async Task<List<WalletResponseDto>> GetWalletByTypeAsync(WalletType type)
+        public async Task<List<WalletResponseDto>> GetWalletByTypeAsync(WalletType type, int userId)
         {
-            var wallets = await _walletRepository.GetByTypeAsync(type);
+            var wallets = await _walletRepository.GetByTypeAsync(type, userId);
             if (wallets == null) return null;
 
             return wallets.Select(w => new WalletResponseDto
@@ -96,9 +93,9 @@ namespace ExpenseTracker.Services
             }).ToList();
         }
 
-        public async Task<WalletTotalDto> GetWalletTotalsAsync()
+        public async Task<WalletTotalDto> GetWalletTotalsAsync(int userId)
         {
-            var wallets = await _walletRepository.GetWalletTotalsAsync();
+            var wallets = await _walletRepository.GetWalletTotalsAsync(userId);
 
             var cashTotal = wallets.Where(w => w.Type == WalletType.Cash).Sum(w => w.Balance);
             var bankTotal = wallets.Where(w => w.Type == WalletType.Bank).Sum(w => w.Balance);
@@ -111,15 +108,12 @@ namespace ExpenseTracker.Services
             };
         }
 
-        public async Task<bool> DeleteWalletAsync(int id)
+        public async Task<bool> DeleteWalletAsync(int id, int userId)
         {
-            var wallet = await _walletRepository.GetByIdAsync(id);
+            var wallet = await _walletRepository.GetByIdAsync(id, userId);
             if (wallet == null) return false;
 
             return await _walletRepository.DeleteAsync(wallet);
-
-
         }
-
     }
 }

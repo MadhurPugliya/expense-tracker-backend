@@ -1,0 +1,78 @@
+{
+  "Timestamp": "2026-02-23 15:35:04",
+  "Level": "INFO",
+  "Message": "User login attempt",
+  "Data": {
+    "Email": "Madhur"
+  }
+}
+{
+  "Timestamp": "2026-02-23 15:35:09",
+  "Level": "WARNING",
+  "Message": "User login failed",
+  "Data": {
+    "Email": "Madhur",
+    "Error": "Invalid credentials"
+  }
+}
+{
+  "Timestamp": "2026-02-23 15:35:30",
+  "Level": "INFO",
+  "Message": "User login attempt",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-23 15:35:30",
+  "Level": "INFO",
+  "Message": "User login successful",
+  "Data": {
+    "Email": "madhurpugliya10@gmail.com"
+  }
+}
+{
+  "Timestamp": "2026-02-23 15:36:00",
+  "Level": "INFO",
+  "Message": "Fetching all categories",
+  "Data": {
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-23 15:36:00",
+  "Level": "INFO",
+  "Message": "Categories fetched successfully",
+  "Data": {
+    "Count": 2,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-23 15:36:19",
+  "Level": "INFO",
+  "Message": "Getting all wallets",
+  "Data": {
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-23 15:36:19",
+  "Level": "INFO",
+  "Message": "Successfully retrieved wallets",
+  "Data": {
+    "Count": 2,
+    "UserId": 1
+  }
+}
+{
+  "Timestamp": "2026-02-23 15:37:03",
+  "Level": "INFO",
+  "Message": "Calculated wallet totals",
+  "Data": {
+    "CashTotal": 1000,
+    "BankTotal": 2000,
+    "GrandTotal": 3000,
+    "UserId": 1
+  }
+}
